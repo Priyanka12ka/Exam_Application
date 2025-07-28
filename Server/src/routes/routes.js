@@ -1,10 +1,7 @@
-let express = require("express");
-let cntrl = require("../controllers/Home");
-let router = express.Router();
+const express = require("express");
+const router = express.Router();
+const AdminRouter = require("./AdminRoutes");
 
-router.get("/", cntrl.Header);
-router.get("/home", cntrl.gethomepage); 
-router.get("/about", cntrl.getAboutPage);
-router.get("/contact",cntrl.getContactPage);
+router.use("/admin", AdminRouter); // your base route
 
 module.exports = router;
