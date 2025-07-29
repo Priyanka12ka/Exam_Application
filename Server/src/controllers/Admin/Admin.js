@@ -1,25 +1,17 @@
 
 const AdminModel = require("../../models//AdminModel/AdminModel.js");
 
-exports.adminLogin = (req, res) => {
+exports.adminLogin = async(req, res) => {
     const { email, password } = req.body;
+    let response=await AdminModel.checkEmailExists(email,password)
+    {
+        if("result" in response)
+        {
+            res.status(200).json({"response":response.result});
+        }
+        else{
+            res.status(402).json({"response":response.err});
+        }
+    }
 
-    AdminModel.checkEmailExists(email)
-        .then((result) => {
-            if (result.length === 0) {
-                res.send("Email not found");
-            } else {
-                const admin = result[0];
-
-                if (admin.password === password) {
-                    res.send("Login successful");
-                } else {
-                    res.send("Invalid password");
-                }
-            }
-        })
-        .catch((err) => {
-            console.error("Login error:", err);
-     
-        });
 };
