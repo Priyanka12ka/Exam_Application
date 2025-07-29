@@ -1,31 +1,13 @@
-const AdminModel = require("../../models/AdminModel");
 
-exports.registerAdminn = (req, res) => {
-    const { name, contact, email, password } = req.body;
+const AdminModel = require("../../models//AdminModel/AdminModel.js");
+
+exports.adminLogin = (req, res) => {
+    const { email, password } = req.body;
 
     AdminModel.checkEmailExists(email)
         .then((result) => {
-            if (result.length > 0) {
-                res.send("Email already registered");
-            } else {
-                return AdminModel.registerAdmin(name, contact, email, password)
-                    .then(() => {
-                        res.send("Admin registered successfully");
-                    });
-            }
-        })
-        .catch((err) => {
-            console.error("Error:", err);
-            res.send("Something went wrong");
-        });
-};
-
-exports.adminLogin=(req,res)=>{
-    const{email,password} = req.body;
-      AdminModel.checkEmailExists(email)
-        .then((result) => {
             if (result.length === 0) {
-                res.send("Email not found. Please register.");
+                res.send("Email not found");
             } else {
                 const admin = result[0];
 
@@ -38,7 +20,6 @@ exports.adminLogin=(req,res)=>{
         })
         .catch((err) => {
             console.error("Login error:", err);
-            res.status(500).send("Server error");
+     
         });
 };
-
